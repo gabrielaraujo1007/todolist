@@ -1,0 +1,117 @@
+
+<main class="container">
+  <header>
+    <span class="eyebrow">ORGANIZAÇÃO PESSOAL</span>
+    <h1>Minhas tarefas<span>.</span></h1>
+    <p>Organize seu dia, uma tarefa de cada vez.</p>
+  </header>
+
+  <form
+    class="task-form"
+    (ngSubmit)="editingId === null ? adicionar() : salvarEdicao()"
+  >
+    <label for="title">
+      {{ editingId === null ? 'Nova tarefa' : 'Editar tarefa' }}
+    </label>
+
+    <input
+      id="title"
+      name="title"
+      [(ngModel)]="title"
+      placeholder="O que você precisa fazer?"
+      required
+      maxlength="150"
+    />
+
+    <label for="description">Descrição (opcional)</label>
+    <textarea
+      id="description"
+      name="description"
+      [(ngModel)]="description"
+      placeholder="Adicione alguns detalhes..."
+      rows="3"
+    ></textarea>
+
+    <button type="submit" [disabled]="!title.trim() || saving">
+      @if (saving) {
+        Salvando...
+      } @else {
+        {{ editingId === null ? '+ Adicionar tarefa' : 'Salvar alterações' }}
+      }
+    </button>
+
+    @if (editingId !== null) {
+      <button
+        type="button"
+        class="cancel"
+        (click)="cancelarEdicao()"
+      >
+        Cancelar edição
+      </button>
+    }
+  </form>
+
+  @if (error) {
+    <p class="error" role="alert">{{ error }}</p>
+  }
+
+  <section class="task-section">
+    <div class="section-heading">
+      <h2>Suas tarefas</h2>
+      <span class="counter">{{ tasks.length }}</span>
+    </div>
+
+    <div class="task-summary">
+      <span>{{ pendentes }} pendente(s)</span>
+      <span>{{ concluidas }} concluída(s)</span>
+    </div>
+
+    @if (tasks.length === 0) {
+      <div class="empty">
+        <p>Nenhuma tarefa por aqui.</p>
+        <span>Adicione sua primeira tarefa acima.</span>
+      </div>
+    }
+
+    @for (task of tasks; track task.id) {
+      <article class="task-item" [class.completed]="task.done">
+        <button
+          type="button"
+          class="check"
+          [attr.aria-label]="task.done ? 'Reabrir tarefa' : 'Concluir tarefa'"
+          (click)="alternar(task)"
+        >
+          {{ task.done ? '✓' : '' }}
+        </button>
+
+        <div class="task-content">
+          <h3>{{ task.title }}</h3>
+
+          @if (task.description) {
+            <p>{{ task.description }}</p>
+          }
+        </div>
+
+        <div class="task-actions">
+          <button
+            type="button"
+            class="edit"
+            (click)="iniciarEdicao(task)"
+          >
+            Editar
+          </button>
+
+          <button
+            type="button"
+            class="delete"
+            (click)="excluir(task)"
+          >
+            Excluir
+          </button>
+        </div>
+      </article>
+    }
+  </section>
+
+  <footer>ToDoList · Feito para organizar suas ideias.</footer>
+</main>
