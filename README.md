@@ -97,9 +97,9 @@ O backend só inicia depois que o banco estiver pronto (healthcheck do PostgreSQ
 
 | Serviço | URL |
 |---|---|
-| Frontend | http://localhost:4200 |
-| API (backend) | http://localhost:8080 |
-| PostgreSQL | localhost:5432 |
+| Frontend | http://127.0.0.1:4200 |
+| API (backend) | http://127.0.0.1:8080 |
+| PostgreSQL | 127.0.0.1:5432 |
 
 ### Variáveis de ambiente
 
